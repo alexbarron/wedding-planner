@@ -1,0 +1,6 @@
+<h1>Your Weddings</h1>
+<ul>
+<% @weddings.each do |wedding| %>
+  <li><a href="/weddings/<%=wedding.id%>"><%= "#{wedding.name} on #{wedding.formatted_date}" %></li>
+<% end %>
+</ul>

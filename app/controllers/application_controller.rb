@@ -53,7 +53,7 @@ class ApplicationController < Sinatra::Base
 
   helpers do
     def logged_in?
-      session[:user_id] ? true : false
+      session[:id] ? true : false
     end
 
     def current_user
