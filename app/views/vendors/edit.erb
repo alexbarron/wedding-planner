@@ -1,0 +1,8 @@
+<h3>Edit a vendor</h3>
+
+<form action="/vendors/<%=@vendor.id%>" method="POST">
+  <p>Name: <input type="text" name="name" value="<%=@vendor.name%>"></p>
+  <p>Title: <input type="text" name="title" value="<%=@vendor.title%>"></p>
+  <p>Cost: <input type="text" name="cost" value="<%=@vendor.cost%>"></p>
+  <input type="submit" value="Edit Vendor">
+</form>
