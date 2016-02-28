@@ -1,3 +1,4 @@
 <h1><%= @guest.name %></h1>
 <p>Role: </p>
 <p>RSVP?: <%= @guest.rsvp ? "Yes" : "No" %></p>
+<a href="/guests/<%=@guest.id%>/edit">Edit Guest</a>

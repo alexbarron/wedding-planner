@@ -1,0 +1,7 @@
+<h3>Edit a guest</h3>
+
+<form action="/guests/<%=@guest.id%>" method="POST">
+  <p>Name: <input type="text" name="name" value="<%=@guest.name%>"></p>
+  <p>Check if already RSVP: <input type="checkbox" name="rsvp" value="true" <%='checked' if @guest.rsvp %>></p>
+  <input type="submit" value="Edit Guest">
+</form>

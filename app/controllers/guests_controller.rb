@@ -23,13 +23,33 @@ class GuestsController < Sinatra::Base
     end
   end
 
+  get "/guests/:id/edit" do
+    if logged_in?
+      @guest = Guest.find(params[:id])
+      erb :edit
+    else
+      redirect "/login", locals: {message: "Please log in to see that."}
+    end
+  end
 
   post "/guests" do
     if logged_in? && params[:name] != ""
       Guest.create(name: params[:name], rsvp: params[:rsvp], wedding_id: current_user.wedding.id)
       redirect "/guests"
     elsif params[:name] == ""
-      redirect "/guests/new", locals: {message: "Tweets can't be empty."}
+      redirect "/guests/new", locals: {message: "Name can't be empty."}
+    else
+      redirect "/login", locals: {message: "Please log in to see that."}
+    end
+  end
+
+  post "/guests/:id" do
+    @guest = Guest.find(params[:id])
+    if logged_in? && params[:name] != ""
+      @guest.update(name: params[:name], rsvp: params[:rsvp])
+      redirect "/guests/#{@guest.id}"
+    elsif params[:name] == ""
+      redirect "/guests/#{@guest.id}/edit", locals: {message: "Name can't be empty."}
     else
       redirect "/login", locals: {message: "Please log in to see that."}
     end
