@@ -8,8 +8,11 @@ class WeddingsController < Sinatra::Base
 
   get '/wedding' do
     if logged_in?
-      @wedding = current_user.wedding
-      erb :show
+      if @wedding = current_user.wedding
+        erb :show
+      else
+        erb :no_wedding
+      end
     else
       redirect '/login', locals: {message: "Please log in to see that."}
     end

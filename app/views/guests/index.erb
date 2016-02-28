@@ -1,7 +1,7 @@
 <h1>Guest List</h1>
+<a href="/guests/new">Add a new guest</a>
 <ol>
 <% @guests.each do |guest| %>
   <li><a href="/guests/<%=guest.id%>"><%= guest.name %></a></li>
 <% end %>
-
 </ol>
