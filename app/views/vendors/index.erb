@@ -1,0 +1,7 @@
+<h1>Vendor List</h1>
+<ol>
+<% @vendors.each do |vendor| %>
+  <li><a href="/vendors/<%=vendor.id%>"><%= "#{vendor.title}: #{vendor.name}" %></a></li>
+<% end %>
+
+</ol>
