@@ -3,3 +3,8 @@
 <p>Date: <%= @wedding.formatted_date %></p>
 <p><a href="/guests">See Guest List</a></p>
 <p><a href="/vendors">See Vendor List</a></p>
+
+<form action="/wedding/delete" method="post">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" value="Delete Wedding">
+</form>

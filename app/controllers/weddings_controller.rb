@@ -18,8 +18,8 @@ class WeddingsController < ApplicationController
   end
 
   delete '/wedding/delete' do
-    @wedding = current_user.wedding
     if logged_in?
+      @wedding = current_user.wedding
       @wedding.destroy
       redirect '/'
     else
