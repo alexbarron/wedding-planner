@@ -2,15 +2,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
   <title></title>
 </head>
 <body>
+  <ul class="nav nav-tabs">
+    <li><a href="/">Home</a></li>
+    <% if logged_in? %>
+    <li><a href="/wedding">Wedding</a></li>
+    <li><a href="/vendors">Vendors</a></li>
+    <li><a href="/guests/">Guests</a></li>
+    <li><a href="/logout">Logout</a></li>
+    <% else %>
+    <li><a href="/signup">Sign Up</a></li>  
+    <li><a href="/login">Log In</a></li>
+    <% end %>
+  </ul>
 
   <% unless locals.empty? %>
     <p><%= message %></p>
   <% end %>
   
-  <%= yield %>
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <%= yield %>
+  </div>
+  <div class="col-md-1"></div>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>
