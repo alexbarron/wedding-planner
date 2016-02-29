@@ -1,5 +1,4 @@
 class VendorsController < ApplicationController
-  set :views, Proc.new { File.join(root, "../views/vendors") }
 
   configure do
     enable :sessions
@@ -9,7 +8,7 @@ class VendorsController < ApplicationController
   get '/vendors' do
     if logged_in?
       @vendors = current_user.wedding.vendors
-      erb :index
+      erb :'/vendors/index'
     else
       redirect '/login', locals: {message: "Please log in to see that."}
     end
@@ -17,7 +16,7 @@ class VendorsController < ApplicationController
 
   get "/vendors/new" do
     if logged_in?
-      erb :new
+      erb :'/vendors/new'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
     end
@@ -26,7 +25,7 @@ class VendorsController < ApplicationController
   get "/vendors/:id/edit" do
     if logged_in?
       @vendor = Vendor.find(params[:id])
-      erb :edit
+      erb :'/vendors/edit'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
     end
@@ -58,7 +57,7 @@ class VendorsController < ApplicationController
   get '/vendors/:id' do
     if logged_in?
       @vendor = Vendor.find(params[:id])
-      erb :show
+      erb :'/vendors/show'
     else
       redirect '/login', locals: {message: "Please log in to see that."}
     end
@@ -71,16 +70,6 @@ class VendorsController < ApplicationController
       redirect '/vendors'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
-    end
-  end
-
-  helpers do
-    def logged_in?
-      session[:id] ? true : false
-    end
-
-    def current_user
-      User.find(session[:id])
     end
   end
 

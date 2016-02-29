@@ -1,5 +1,4 @@
 class GuestsController < ApplicationController
-  set :views, Proc.new { File.join(root, "../views/guests") }
 
   configure do
     enable :sessions
@@ -9,7 +8,7 @@ class GuestsController < ApplicationController
   get '/guests' do
     if logged_in?
       @guests = current_user.wedding.guests
-      erb :index
+      erb :'/guests/index'
     else
       redirect '/login', locals: {message: "Please log in to see that."}
     end
@@ -17,7 +16,7 @@ class GuestsController < ApplicationController
 
   get "/guests/new" do
     if logged_in?
-      erb :new
+      erb :'/guests/new'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
     end
@@ -26,7 +25,7 @@ class GuestsController < ApplicationController
   get "/guests/:id/edit" do
     if logged_in?
       @guest = Guest.find(params[:id])
-      erb :edit
+      erb :'/guests/edit'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
     end
@@ -58,7 +57,7 @@ class GuestsController < ApplicationController
   get '/guests/:id' do
     if logged_in?
       @guest = Guest.find(params[:id])
-      erb :show
+      erb :'/guests/show'
     else
       redirect '/login', locals: {message: "Please log in to see that."}
     end
@@ -71,16 +70,6 @@ class GuestsController < ApplicationController
       redirect '/guests'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
-    end
-  end
-
-  helpers do
-    def logged_in?
-      session[:id] ? true : false
-    end
-
-    def current_user
-      User.find(session[:id])
     end
   end
 

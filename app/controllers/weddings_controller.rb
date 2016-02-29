@@ -1,5 +1,4 @@
 class WeddingsController < ApplicationController
-  set :views, Proc.new { File.join(root, "../views/weddings") }
 
   configure do
     enable :sessions
@@ -9,22 +8,22 @@ class WeddingsController < ApplicationController
   get '/wedding' do
     if logged_in?
       if @wedding = current_user.wedding
-        erb :show
+        erb :'/wedding/show'
       else
-        erb :no_wedding
+        erb :'/wedding/no_wedding'
       end
     else
       redirect '/login', locals: {message: "Please log in to see that."}
     end
   end
 
-  helpers do
-    def logged_in?
-      session[:id] ? true : false
-    end
-
-    def current_user
-      User.find(session[:id])
+  delete '/wedding/delete' do
+    @wedding = current_user.wedding
+    if logged_in?
+      @wedding.destroy
+      redirect '/'
+    else
+      redirect "/login", locals: {message: "Please log in to see that."}
     end
   end
 
