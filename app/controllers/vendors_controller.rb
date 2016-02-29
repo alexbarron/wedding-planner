@@ -1,4 +1,4 @@
-class VendorsController < Sinatra::Base
+class VendorsController < ApplicationController
   set :views, Proc.new { File.join(root, "../views/vendors") }
 
   configure do
@@ -61,6 +61,16 @@ class VendorsController < Sinatra::Base
       erb :show
     else
       redirect '/login', locals: {message: "Please log in to see that."}
+    end
+  end
+
+  delete '/vendors/:id/delete' do
+    @vendor = Vendor.find(params[:id])
+    if logged_in? && @vendor.wedding.user == current_user
+      @vendor.destroy
+      redirect '/vendors'
+    else
+      redirect "/login", locals: {message: "Please log in to see that."}
     end
   end
 

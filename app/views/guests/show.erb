@@ -2,3 +2,8 @@
 <p>Role: </p>
 <p>RSVP?: <%= @guest.rsvp ? "Yes" : "No" %></p>
 <a href="/guests/<%=@guest.id%>/edit">Edit Guest</a>
+
+<form action="/guests/<%=@guest.id%>/delete" method="post">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" value="Delete Guest">
+</form>

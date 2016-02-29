@@ -1,4 +1,4 @@
-class WeddingsController < Sinatra::Base
+class WeddingsController < ApplicationController
   set :views, Proc.new { File.join(root, "../views/weddings") }
 
   configure do

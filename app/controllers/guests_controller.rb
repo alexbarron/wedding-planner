@@ -1,4 +1,4 @@
-class GuestsController < Sinatra::Base
+class GuestsController < ApplicationController
   set :views, Proc.new { File.join(root, "../views/guests") }
 
   configure do
@@ -61,6 +61,16 @@ class GuestsController < Sinatra::Base
       erb :show
     else
       redirect '/login', locals: {message: "Please log in to see that."}
+    end
+  end
+
+  delete '/guests/:id/delete' do
+    @guest = Guest.find(params[:id])
+    if logged_in? && @guest.wedding.user == current_user
+      @guest.destroy
+      redirect '/guests'
+    else
+      redirect "/login", locals: {message: "Please log in to see that."}
     end
   end
 
