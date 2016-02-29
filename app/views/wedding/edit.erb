@@ -1,0 +1,10 @@
+<h3>Edit Wedding</h3>
+
+<form action="/wedding/edit" method="POST">
+  <p>Name: <input type="text" name="name" value="<%=@wedding.name%>"></p>
+  <p>Location: <input type="text" name="location" value="<%=@wedding.location%>"></p>
+  <p>Month: <input type="text" name="month" placeholder="MM" value="<%=@wedding.date.strftime('%m')%>"> 
+  Day: <input type="text" name="day" placeholder="DD" value="<%=@wedding.date.strftime('%d')%>"> 
+  Year: <input type="text" name="year" placeholder="YYYY" value="<%=@wedding.date.strftime('%Y')%>"></p>
+  <input type="submit" value="Edit Wedding">
+</form>
