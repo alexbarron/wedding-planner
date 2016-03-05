@@ -48,11 +48,14 @@ class VendorsController < ApplicationController
 
   post "/vendors/:id" do
     @vendor = Vendor.find(params[:id])
-    if logged_in? && params[:name] != ""
+    if logged_in? && params[:name] != "" && valid_cost(params[:cost])
       @vendor.update(name: params[:name], title: params[:title], cost: params[:cost], wedding_id: current_user.wedding.id)
       redirect "/vendors/#{@vendor.id}"
     elsif params[:name] == ""
       session[:message] = "Name can't be empty."
+      redirect "/vendors/#{@vendor.id}/edit"
+    elsif !valid_cost(params[:cost])
+      session[:message] = "Cost must be a positive integer or 0."
       redirect "/vendors/#{@vendor.id}/edit"
     else
       login_redirect
