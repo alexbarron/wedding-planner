@@ -33,7 +33,7 @@ class GuestsController < ApplicationController
 
   post "/guests" do
     if logged_in? && params[:name] != ""
-      Guest.create(name: params[:name], rsvp: params[:rsvp], wedding_id: current_user.wedding.id)
+      Guest.create(name: params[:name], role: params[:role], rsvp: params[:rsvp], wedding_id: current_user.wedding.id)
       redirect "/guests"
     elsif params[:name] == ""
       redirect "/guests/new", locals: {message: "Name can't be empty."}
@@ -45,7 +45,7 @@ class GuestsController < ApplicationController
   post "/guests/:id" do
     @guest = Guest.find(params[:id])
     if logged_in? && params[:name] != ""
-      @guest.update(name: params[:name], rsvp: params[:rsvp])
+      @guest.update(name: params[:name], role: params[:role], rsvp: params[:rsvp])
       redirect "/guests/#{@guest.id}"
     elsif params[:name] == ""
       redirect "/guests/#{@guest.id}/edit", locals: {message: "Name can't be empty."}
