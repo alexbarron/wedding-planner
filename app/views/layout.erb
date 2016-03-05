@@ -21,8 +21,11 @@
     <% end %>
   </ul>
 
-  <% unless locals.empty? %>
-    <p><%= message %></p>
+  <% unless session[:message].nil? %>
+    <center>
+      <h3><%= session[:message] %></h3>
+    </center>
+    <% session[:message].clear %>
   <% end %>
   
   <div class="col-md-1"></div>

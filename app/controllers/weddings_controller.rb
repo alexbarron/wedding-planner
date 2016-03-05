@@ -13,7 +13,7 @@ class WeddingsController < ApplicationController
         erb :'/wedding/no_wedding'
       end
     else
-      redirect '/login', locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -21,9 +21,10 @@ class WeddingsController < ApplicationController
     if logged_in?
       @wedding = current_user.wedding
       @wedding.destroy
+      session[:message] = "Wedding deleted."
       redirect '/wedding'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -31,9 +32,10 @@ class WeddingsController < ApplicationController
     if logged_in? && !current_user.wedding
       erb :'/wedding/new'
     elsif current_user.wedding
-      redirect '/wedding', locals: {message: "You can't create more than 1 wedding per account."}
+      session[:message] = "You can't create more than 1 wedding per account. Please delete current wedding before creating another."
+      redirect '/wedding'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -42,9 +44,10 @@ class WeddingsController < ApplicationController
       Wedding.create(name: params[:name], location: params[:location], date: params[:date], user_id: current_user.id)
       redirect "/wedding"
     elsif params[:name] == ""
-      redirect "/wedding/new", locals: {message: "Name can't be empty."}
+      session[:message] = "Name can't be empty."
+      redirect "/wedding/new"
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -53,7 +56,7 @@ class WeddingsController < ApplicationController
       @wedding = current_user.wedding
       erb :'/wedding/edit'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -63,9 +66,10 @@ class WeddingsController < ApplicationController
       @wedding.update(name: params[:name], location: params[:location], date: params[:date])
       redirect "/wedding"
     elsif params[:name] == ""
-      redirect "/wedding/edit", locals: {message: "Name can't be empty."}
+      session[:message] = "Name can't be empty."
+      redirect "/wedding/edit"
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 

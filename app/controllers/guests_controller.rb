@@ -10,7 +10,7 @@ class GuestsController < ApplicationController
       @guests = current_user.wedding.guests
       erb :'/guests/index'
     else
-      redirect '/login', locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -18,7 +18,7 @@ class GuestsController < ApplicationController
     if logged_in?
       erb :'/guests/new'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -27,7 +27,7 @@ class GuestsController < ApplicationController
       @guest = Guest.find(params[:id])
       erb :'/guests/edit'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -36,9 +36,10 @@ class GuestsController < ApplicationController
       Guest.create(name: params[:name], role: params[:role], rsvp: params[:rsvp], wedding_id: current_user.wedding.id)
       redirect "/guests"
     elsif params[:name] == ""
-      redirect "/guests/new", locals: {message: "Name can't be empty."}
+      session[:message] = "Name can't be empty."
+      redirect "/guests/new"
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -48,9 +49,10 @@ class GuestsController < ApplicationController
       @guest.update(name: params[:name], role: params[:role], rsvp: params[:rsvp])
       redirect "/guests/#{@guest.id}"
     elsif params[:name] == ""
-      redirect "/guests/#{@guest.id}/edit", locals: {message: "Name can't be empty."}
+      session[:message] = "Name can't be empty."
+      redirect "/guests/#{@guest.id}/edit"
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -59,7 +61,7 @@ class GuestsController < ApplicationController
       @guest = Guest.find(params[:id])
       erb :'/guests/show'
     else
-      redirect '/login', locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -67,9 +69,10 @@ class GuestsController < ApplicationController
     @guest = Guest.find(params[:id])
     if logged_in? && @guest.wedding.user == current_user
       @guest.destroy
+      session[:message] = "Guest deleted"
       redirect '/guests'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 

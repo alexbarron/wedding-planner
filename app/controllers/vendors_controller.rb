@@ -10,7 +10,7 @@ class VendorsController < ApplicationController
       @vendors = current_user.wedding.vendors
       erb :'/vendors/index'
     else
-      redirect '/login', locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -18,7 +18,7 @@ class VendorsController < ApplicationController
     if logged_in?
       erb :'/vendors/new'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -27,7 +27,7 @@ class VendorsController < ApplicationController
       @vendor = Vendor.find(params[:id])
       erb :'/vendors/edit'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -36,9 +36,10 @@ class VendorsController < ApplicationController
       Vendor.create(name: params[:name], title: params[:title], cost: params[:cost].to_i, wedding_id: current_user.wedding.id)
       redirect "/vendors/#{Vendor.last.id}"
     elsif params[:name] == ""
-      redirect "/vendors/new", locals: {message: "Name can't be empty."}
+      session[:message] = "Name can't be empty."
+      redirect "/vendors/new"
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -48,9 +49,10 @@ class VendorsController < ApplicationController
       @vendor.update(name: params[:name], title: params[:title], cost: params[:cost], wedding_id: current_user.wedding.id)
       redirect "/vendors/#{@vendor.id}"
     elsif params[:name] == ""
-      redirect "/vendors/#{@vendor.id}/edit", locals: {message: "Name can't be empty."}
+      session[:message] = "Name can't be empty."
+      redirect "/vendors/#{@vendor.id}/edit"
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -59,7 +61,7 @@ class VendorsController < ApplicationController
       @vendor = Vendor.find(params[:id])
       erb :'/vendors/show'
     else
-      redirect '/login', locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 
@@ -67,9 +69,10 @@ class VendorsController < ApplicationController
     @vendor = Vendor.find(params[:id])
     if logged_in? && @vendor.wedding.user == current_user
       @vendor.destroy
+      session[:message] = "Vendor deleted."
       redirect '/vendors'
     else
-      redirect "/login", locals: {message: "Please log in to see that."}
+      login_redirect
     end
   end
 

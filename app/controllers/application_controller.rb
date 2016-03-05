@@ -16,16 +16,20 @@ class ApplicationController < Sinatra::Base
     if !logged_in?
       erb :signup
     else
-      redirect '/', locals: {message: "You're already logged in!"}
+      session[:message] = "You're already logged in!"
+      redirect '/wedding'
     end
   end
 
   post "/signup" do
     if params[:username] != "" && params[:password] != ""
       User.create(username: params[:username], email: params[:username], password: params[:password])
-      redirect '/login', locals: {message: "Sign up successful, please log in now."}
+      session[:id] = user.id
+      session[:message] = "Successfully signed up."
+      redirect '/wedding'
     else
-      redirect '/signup', locals: {message: "Sign up failed, try again."}
+      session[:message] = "Sign up failed, try again."
+      redirect '/signup'
     end
   end
 
@@ -33,7 +37,8 @@ class ApplicationController < Sinatra::Base
     if !logged_in?
       erb :login
     else
-      redirect '/', locals: {message: "You're already logged in!"}
+      session[:message] = "You're already logged in!"
+      redirect '/wedding'
     end
   end
 
@@ -41,15 +46,18 @@ class ApplicationController < Sinatra::Base
     user = User.find_by(username: params[:username])
     if user && user.authenticate(params[:password])
       session[:id] = user.id
-      redirect '/wedding', locals: {message: "Successfully logged in."}
+      session[:message] = "Successfully logged in."
+      redirect '/wedding'
     else
-      redirect "/login", locals: {message: "Log in failed, try again."}
+      session[:message] = "Log in failed, try again."
+      redirect "/login"
     end
   end
 
   get "/logout" do
     session.clear
-    redirect "/", locals: {message: "Successfully logged out."}
+    session[:message] = "Successfully logged out."
+    redirect "/"
   end
 
   helpers do
@@ -59,6 +67,11 @@ class ApplicationController < Sinatra::Base
 
     def current_user
       User.find(session[:id])
+    end
+
+    def login_redirect
+      session[:message] = "Please log in to see that."
+      redirect '/login'
     end
   end
 end
