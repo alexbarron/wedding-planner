@@ -22,7 +22,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/signup" do
-    if params[:username] != "" && params[:password] != ""
+    if params[:username] != "" && params[:email] != "" && params[:password] != ""
       User.create(username: params[:username], email: params[:username], password: params[:password])
       session[:id] = user.id
       session[:message] = "Successfully signed up."

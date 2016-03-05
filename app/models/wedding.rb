@@ -3,6 +3,8 @@ class Wedding < ActiveRecord::Base
   has_many :guests, dependent: :destroy
   has_many :vendors, dependent: :destroy
 
+  validates_presence_of :name
+
   def formatted_date
     self.date.strftime("%A %B %e, %Y")
   end

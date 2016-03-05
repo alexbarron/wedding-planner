@@ -69,7 +69,7 @@ class GuestsController < ApplicationController
     @guest = Guest.find(params[:id])
     if logged_in? && @guest.wedding.user == current_user
       @guest.destroy
-      session[:message] = "Guest deleted"
+      session[:message] = "Guest deleted."
       redirect '/guests'
     else
       login_redirect
