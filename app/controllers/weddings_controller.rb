@@ -21,7 +21,7 @@ class WeddingsController < ApplicationController
     if logged_in?
       @wedding = current_user.wedding
       @wedding.destroy
-      redirect '/'
+      redirect '/wedding'
     else
       redirect "/login", locals: {message: "Please log in to see that."}
     end
@@ -39,8 +39,7 @@ class WeddingsController < ApplicationController
 
   post '/wedding' do
     if logged_in? && params[:name] != ""
-      date = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
-      Wedding.create(name: params[:name], location: params[:location], date: date, user_id: current_user.id)
+      Wedding.create(name: params[:name], location: params[:location], date: params[:date], user_id: current_user.id)
       redirect "/wedding"
     elsif params[:name] == ""
       redirect "/wedding/new", locals: {message: "Name can't be empty."}
@@ -61,8 +60,7 @@ class WeddingsController < ApplicationController
   post "/wedding/edit" do
     if logged_in? && params[:name] != ""
       @wedding = current_user.wedding
-      date = "#{params[:year]}-#{params[:month]}-#{params[:day]}"
-      @wedding.update(name: params[:name], location: params[:location], date: date)
+      @wedding.update(name: params[:name], location: params[:location], date: params[:date])
       redirect "/wedding"
     elsif params[:name] == ""
       redirect "/wedding/edit", locals: {message: "Name can't be empty."}

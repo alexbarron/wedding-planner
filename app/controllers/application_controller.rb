@@ -41,7 +41,7 @@ class ApplicationController < Sinatra::Base
     user = User.find_by(username: params[:username])
     if user && user.authenticate(params[:password])
       session[:id] = user.id
-      redirect '/', locals: {message: "Successfully logged in."}
+      redirect '/wedding', locals: {message: "Successfully logged in."}
     else
       redirect "/login", locals: {message: "Log in failed, try again."}
     end

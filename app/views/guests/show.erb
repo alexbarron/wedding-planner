@@ -1,9 +1,10 @@
 <h1><%= @guest.name %></h1>
 <p>Role: </p>
 <p>RSVP?: <%= @guest.rsvp ? "Yes" : "No" %></p>
-<a href="/guests/<%=@guest.id%>/edit">Edit Guest</a>
 
+<a href="/guests/<%=@guest.id%>/edit" class="btn btn-primary">Edit Guest</a>
+<br /><br />
 <form action="/guests/<%=@guest.id%>/delete" method="post">
   <input id="hidden" type="hidden" name="_method" value="delete">
-  <input type="submit" value="Delete Guest">
+  <input type="submit" class="btn btn-danger" value="Delete Guest">
 </form>

@@ -1,7 +1,9 @@
-<h1>Guest List</h1>
-<a href="/guests/new">Add a new guest</a>
+<h1 class="text-center">Guest List <a href="/guests/new" class="btn btn-primary">Add Guest</a></h1>
+
+<div class="col-md-4 col-md-offset-4">
   <ol>
   <% @guests.each do |guest| %>
     <li><a href="/guests/<%=guest.id%>"><%= guest.name %></a></li>
   <% end %>
   </ol>
+</div>
