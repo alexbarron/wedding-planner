@@ -18,7 +18,9 @@ class Wedding < ActiveRecord::Base
   end
 
   def avg_vendor_cost
-    total_vendor_cost / self.vendors.count
+    unless self.vendors.count == 0
+      total_vendor_cost / self.vendors.count
+    end
   end
 
 end

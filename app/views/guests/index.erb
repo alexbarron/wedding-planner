@@ -3,7 +3,7 @@
 <div class="col-md-4 col-md-offset-4">
   <ol>
   <% @guests.each do |guest| %>
-    <li><a href="/guests/<%=guest.id%>"><%= "#{guest.role}: " if guest.role != "None" %><%= guest.name %></a></li>
+    <li><a href="/guests/<%=guest.id%>"><%= guest.display %></a></li>
   <% end %>
   </ol>
 </div>

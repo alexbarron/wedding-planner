@@ -7,7 +7,7 @@ class VendorsController < ApplicationController
 
   get '/vendors' do
     if logged_in?
-      @vendors = current_user.wedding.vendors
+      @vendors = current_user.vendors
       erb :'/vendors/index'
     else
       login_redirect
@@ -23,11 +23,11 @@ class VendorsController < ApplicationController
   end
 
   get "/vendors/:id/edit" do
-    if logged_in?
-      @vendor = Vendor.find(params[:id])
+    if logged_in? && @vendor = current_user.vendors.find_by(id: params[:id])
       erb :'/vendors/edit'
     else
-      login_redirect
+      session[:message] = "That's not your vendor!"
+      redirect '/wedding'
     end
   end
 
@@ -47,7 +47,7 @@ class VendorsController < ApplicationController
   end
 
   post "/vendors/:id" do
-    @vendor = Vendor.find(params[:id])
+    @vendor = current_user.vendors.find_by(id: params[:id])
     if logged_in? && params[:name] != "" && valid_cost(params[:cost])
       @vendor.update(name: params[:name], title: params[:title], cost: params[:cost], wedding_id: current_user.wedding.id)
       redirect "/vendors/#{@vendor.id}"
@@ -63,18 +63,17 @@ class VendorsController < ApplicationController
   end
 
   get '/vendors/:id' do
-    if logged_in?
-      @vendor = Vendor.find(params[:id])
+    if logged_in? && @vendor = current_user.vendors.find_by(id: params[:id])
       erb :'/vendors/show'
     else
-      login_redirect
+      session[:message] = "That's not your vendor!"
+      redirect '/wedding'
     end
   end
 
   delete '/vendors/:id/delete' do
-    @vendor = Vendor.find(params[:id])
-    if logged_in? && @vendor.wedding.user == current_user
-      @vendor.destroy
+    @vendor = current_user.vendors.find_by(id: params[:id])
+    if logged_in? && @vendor.destroy
       session[:message] = "Vendor deleted."
       redirect '/vendors'
     else

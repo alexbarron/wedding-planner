@@ -7,7 +7,7 @@ class GuestsController < ApplicationController
 
   get '/guests' do
     if logged_in?
-      @guests = current_user.wedding.guests
+      @guests = current_user.guests
       erb :'/guests/index'
     else
       login_redirect
@@ -23,11 +23,11 @@ class GuestsController < ApplicationController
   end
 
   get "/guests/:id/edit" do
-    if logged_in?
-      @guest = Guest.find(params[:id])
+    if logged_in? && @guest = current_user.guests.find_by(id: params[:id])
       erb :'/guests/edit'
     else
-      login_redirect
+      session[:message] = "That's not your guest!"
+      redirect '/wedding'
     end
   end
 
@@ -44,7 +44,7 @@ class GuestsController < ApplicationController
   end
 
   post "/guests/:id" do
-    @guest = Guest.find(params[:id])
+    @guest = current_user.guests.find_by(id: params[:id])
     if logged_in? && params[:name] != ""
       @guest.update(name: params[:name], role: params[:role], rsvp: params[:rsvp])
       redirect "/guests/#{@guest.id}"
@@ -57,18 +57,17 @@ class GuestsController < ApplicationController
   end
 
   get '/guests/:id' do
-    if logged_in?
-      @guest = Guest.find(params[:id])
+    if logged_in? && @guest = current_user.guests.find_by(id: params[:id])
       erb :'/guests/show'
     else
-      login_redirect
+      session[:message] = "That's not your guest!"
+      redirect '/wedding'
     end
   end
 
   delete '/guests/:id/delete' do
-    @guest = Guest.find(params[:id])
-    if logged_in? && @guest.wedding.user == current_user
-      @guest.destroy
+    @guest = current_user.guests.find_by(id: params[:id])
+    if logged_in? && @guest.destroy
       session[:message] = "Guest deleted."
       redirect '/guests'
     else

@@ -3,7 +3,7 @@
 <div class="col-md-4 col-md-offset-4">
 <ol>
 <% @vendors.each do |vendor| %>
-  <li><a href="/vendors/<%=vendor.id%>"><%= "#{vendor.title}: #{vendor.name}" %></a></li>
+  <li><a href="/vendors/<%=vendor.id%>"><%= vendor.display %></a></li>
 <% end %>
 
 </ol>

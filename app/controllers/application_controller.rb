@@ -23,7 +23,7 @@ class ApplicationController < Sinatra::Base
 
   post "/signup" do
     if params[:username] != "" && params[:email] != "" && params[:password] != ""
-      User.create(username: params[:username], email: params[:username], password: params[:password])
+      user = User.create(username: params[:username], email: params[:username], password: params[:password])
       session[:id] = user.id
       session[:message] = "Successfully signed up."
       redirect '/wedding'
@@ -62,11 +62,11 @@ class ApplicationController < Sinatra::Base
 
   helpers do
     def logged_in?
-      session[:id] ? true : false
+      !!current_user
     end
 
     def current_user
-      User.find(session[:id])
+      @current_user ||= User.find(session[:id]) if session[:id]
     end
 
     def login_redirect
